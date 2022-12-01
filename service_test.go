@@ -26,6 +26,27 @@ func TestUppercase(t *testing.T) {
 	}))
 }
 
+func TestUppercaseEmpty(t *testing.T) {
+	allure.Test(t, allure.Action(func() {
+		strService := stringService{}
+		str := ""
+		expected := ""
+
+		actual, err := strService.Uppercase(str)
+		if err == nil {
+			t.Error("Expected error, got nil")
+		}
+
+		if err.Error() != "empty string" {
+			t.Errorf("Expected error %s, got %s", "empty string", err.Error())
+		}
+
+		if actual != expected {
+			t.Errorf("Expected %s, got %s", expected, actual)
+		}
+	}))
+}
+
 func TestCount(t *testing.T) {
 	allure.Test(t, allure.Action(func() {
 		strService := stringService{}
