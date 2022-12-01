@@ -4,12 +4,12 @@ COPY . /build
 
 WORKDIR /build
 
-RUN go build -o /tmp/back_server ./main.go
+RUN go build -o /tmp/server .
 
 FROM alpine:3.16
 
-COPY --from=builder /tmp/back_server /usr/bin/back_server
+COPY --from=builder /tmp/server /usr/bin/server
 
-RUN chmod +x /usr/bin/back_server
+RUN chmod +x /usr/bin/server
 
-ENTRYPOINT ["back_server"]
+ENTRYPOINT ["server"]

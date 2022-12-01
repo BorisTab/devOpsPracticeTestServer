@@ -79,6 +79,28 @@ func TestMakeUppercaseEndpoint(t *testing.T) {
 	}))
 }
 
+func TestMakeUppercaseEndpointEmpty(t *testing.T) {
+	allure.Test(t, allure.Action(func() {
+		strService := stringService{}
+		endpoint := makeUppercaseEndpoint(strService)
+		str := ""
+		expected := ""
+
+		actual, err := endpoint(nil, uppercaseRequest{str})
+		if err != nil {
+			t.Error(err)
+		}
+
+		if actual.(uppercaseResponse).Err != "empty string" {
+			t.Errorf("Expected error %s, got %s", "empty string", actual.(uppercaseResponse).Err)
+		}
+
+		if actual.(uppercaseResponse).V != expected {
+			t.Errorf("Expected %s, got %s", expected, actual)
+		}
+	}))
+}
+
 func TestMakeCountEndpoint(t *testing.T) {
 	allure.Test(t, allure.Action(func() {
 		strService := stringService{}
@@ -115,6 +137,24 @@ func TestDecodeUppercaseRequest(t *testing.T) {
 	}))
 }
 
+func TestDecodeUppercaseRequestWrongJson(t *testing.T) {
+	allure.Test(t, allure.Action(func() {
+		str := "hello"
+		expected := uppercaseRequest{str}
+
+		req := httptest.NewRequest("POST", "/uppercase", strings.NewReader(`{"s":"`+str+`"`))
+
+		actual, err := decodeUppercaseRequest(nil, req)
+		if err == nil {
+			t.Error("Expected error, got nil")
+		}
+
+		if actual != nil {
+			t.Errorf("Expected %s, got %s", expected, actual)
+		}
+	}))
+}
+
 func TestDecodeCountRequest(t *testing.T) {
 	allure.Test(t, allure.Action(func() {
 		str := "hello"
@@ -128,6 +168,24 @@ func TestDecodeCountRequest(t *testing.T) {
 		}
 
 		if actual.(countRequest).S != expected.S {
+			t.Errorf("Expected %s, got %s", expected, actual)
+		}
+	}))
+}
+
+func TestDecodeCountRequestWrongJson(t *testing.T) {
+	allure.Test(t, allure.Action(func() {
+		str := "hello"
+		expected := countRequest{str}
+
+		req := httptest.NewRequest("POST", "/count", strings.NewReader(`{"s":"`+str+`"`))
+
+		actual, err := decodeCountRequest(nil, req)
+		if err == nil {
+			t.Error("Expected error, got nil")
+		}
+
+		if actual != nil {
 			t.Errorf("Expected %s, got %s", expected, actual)
 		}
 	}))
