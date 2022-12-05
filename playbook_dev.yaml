@@ -1,0 +1,16 @@
+- name: Run test_server
+  hosts: dev
+  remote_user: ansible-user
+
+  tasks:
+    - name: copy binary file
+      copy: 
+        src: test_server
+        dest: /home/ansible-user/test_server
+    
+    - name: run test_server
+      shell: |
+        chmod +x test_server 
+        nohup ./test_server > /dev/null 2>&1 &
+      args:
+        chdir: /home/ansible-user

@@ -1,0 +1,17 @@
+all:
+  hosts:
+    dev:
+      ansible_host: dev
+      # hostname: localhost
+      # http_port: 8080
+      ansible_port: 22
+      ansible_user: ansible-user
+      remote_user: ansible-user
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa
+
+    prod:
+      ansible_host: prod
+      ansible_port: 22
+      ansible_user: ansible-user
+      remote_user: ansible-user
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa
