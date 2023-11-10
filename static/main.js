@@ -6,7 +6,7 @@ function getUppercase() {
 
     console.log(JSON.stringify(body))
 
-    fetch("/uppercase", {
+    fetch("./uppercase", {
         method: 'post',
         body: JSON.stringify(body)
     })
@@ -25,7 +25,7 @@ function getCount() {
 
     console.log(JSON.stringify(body))
 
-    fetch("/count", {
+    fetch("./count", {
         method: 'post',
         body: JSON.stringify(body)
     })
