@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 	"strings"
 
@@ -47,6 +48,14 @@ type countResponse struct {
 	V int `json:"v"`
 }
 
+func countScore(scores []int) int {
+	total := 0
+	for _, score := range scores {
+		total += score
+	}
+	return total
+}
+
 func makeUppercaseEndpoint(svc StringService) endpoint.Endpoint {
 	return func(_ context.Context, request interface{}) (interface{}, error) {
 		req := request.(uppercaseRequest)
@@ -54,7 +63,10 @@ func makeUppercaseEndpoint(svc StringService) endpoint.Endpoint {
 		if err != nil {
 			return uppercaseResponse{v, err.Error()}, nil
 		}
-		return uppercaseResponse{v, ""}, nil
+
+		resp := uppercaseResponse{v, ""}
+		log.Println("Request: ", req.S, ", Response: ", resp.V)
+		return resp, nil
 	}
 }
 
@@ -62,7 +74,10 @@ func makeCountEndpoint(svc StringService) endpoint.Endpoint {
 	return func(_ context.Context, request interface{}) (interface{}, error) {
 		req := request.(countRequest)
 		v := svc.Count(req.S)
-		return countResponse{v}, nil
+
+		resp := countResponse{v}
+		log.Println("Request: ", req.S, ", Response: ", resp.V)
+		return resp, nil
 	}
 }
 
