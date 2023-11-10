@@ -21,6 +21,7 @@ func main() {
 		encodeResponse,
 	)
 
+	http.Handle("/", http.FileServer(http.Dir("./static")))
 	http.Handle("/uppercase", uppercaseHandler)
 	http.Handle("/count", countHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
